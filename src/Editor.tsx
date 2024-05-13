@@ -9,8 +9,24 @@ import 'brace/theme/monokai';
 import 'brace/theme/github';
 const themes = ['github', 'monokai', 'dracula'];
 
+const schema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        alias: {
+          type: 'string'
+        },
+        components: {
+          type: 'array'
+        }
+    },
+    required: ['id', 'alias']
+};
+
 const Editor1 = ({ data, mode, onChange }) => {
-  const [theme, setTheme] = useState(themes[0]);
+  const [theme, setTheme] = useState(themes[1]);
   const saveJSON = () => {
     // save to localStorage
     localStorage.setItem("json", JSON.stringify(data));
@@ -19,9 +35,10 @@ const Editor1 = ({ data, mode, onChange }) => {
   useEffect(() => {
     // FIXME: theme change import not working
     async function loadTheme() {
+      /* @vite-ignore */
       await import(`brace/theme/${theme}`);
     }
-    loadTheme();
+    // loadTheme();
   }, [theme])
   return (
     <>
@@ -33,11 +50,13 @@ const Editor1 = ({ data, mode, onChange }) => {
           console.log(updatedJson);
           if(onChange) onChange(updatedJson);
         }}
+        onError={(error) => console.table("error", error)}
         mode={mode}
         history
         theme={`ace/theme/${theme}`}
         allowedModes={Editor.modes.allValues}
         ajv={ajv}
+        schema={schema}
         ace={ace}
       />
       <select onChange={e => setTheme(e.target.value)}>
