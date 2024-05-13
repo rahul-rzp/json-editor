@@ -1,6 +1,9 @@
 import React from "react";
 import { JsonEditor as Editor } from "jsoneditor-react";
 import "jsoneditor-react/es/editor.min.css";
+import Ajv from 'ajv';
+
+const ajv = new Ajv({ allErrors: true, verbose: true });
 
 const Editor1 = ({ data, mode, onChange }) => {
   const saveJSON = () => {
@@ -19,6 +22,8 @@ const Editor1 = ({ data, mode, onChange }) => {
         mode={mode}
         history
         theme="ace/theme/github"
+        allowedModes={Editor.modes.allValues}
+        ajv={ajv}
       />
       <button onClick={saveJSON}>Save JSON</button>
     </>

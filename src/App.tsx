@@ -21,11 +21,14 @@ const newStyles = {
         codeFoldBackground: "#E2E4E5",
       },
     },
+    contentText: {
+      color: 'black'
+    }
   };
 
 function App() {
   const [jsonData, setJsonData] = useState(initialJSONData);
-  const [showDiff, setShowDiff] = useState(false);
+  const [showDiff, setShowDiff] = useState(true);
 
   useEffect(() => {
     const diff = Diff.diffWords(JSON.stringify(initialJSONData, undefined, 4), JSON.stringify(jsonData, undefined, 4))
@@ -51,10 +54,10 @@ function App() {
         splitView={true}
         compareMethod={DiffMethod.WORDS}
         styles={newStyles}
-        leftTitle="Version A"
-        rightTitle="Version B"
+        leftTitle="Old version"
+        rightTitle="New version"
         hideLineNumbers={false}
-        showDiffOnly={true}
+        showDiffOnly={false}
         // renderContent={highlightSyntax}
       />}
    </main>
