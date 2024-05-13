@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Editor1 from "./Editor";
 import ReactDiffViewer, { DiffMethod } from "react-diff-viewer";
+import * as Diff from 'diff';
 
 const defaultJSONData = {
     name: 'John',
@@ -26,6 +27,14 @@ function App() {
   const [jsonData, setJsonData] = useState(initialJSONData);
   const [showDiff, setShowDiff] = useState(false);
 
+  useEffect(() => {
+    const diff = Diff.diffWords(JSON.stringify(initialJSONData, undefined, 4), JSON.stringify(jsonData, undefined, 4))
+    console.log('diff', diff);
+    // .forEach(part => {
+    //   console.log(part);
+    // })
+  }, [initialJSONData, jsonData])
+
   const toggleDiff = () => {
     setShowDiff(!showDiff);
   }
@@ -44,6 +53,8 @@ function App() {
         styles={newStyles}
         leftTitle="Version A"
         rightTitle="Version B"
+        hideLineNumbers={false}
+        showDiffOnly={true}
         // renderContent={highlightSyntax}
       />}
    </main>
